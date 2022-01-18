@@ -1,0 +1,70 @@
+name: Build and push images
+
+on:
+  push:
+    branches:
+      - 'main'
+  schedule:
+    - cron: '20 4 * * *'
+  workflow_dispatch:
+
+jobs:
+
+  docker:
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract alpine image metadata
+        id: alpine-meta
+        uses: docker/metadata-action@v3
+        with:
+          images: ghcr.io/acrobox/docker/alpine
+          labels: |
+            org.opencontainers.image.title=Acrobox Alpine
+            org.opencontainers.image.description=Base image for Acrobox and lovers.
+            org.opencontainers.image.licenses=ISC
+          tags: |
+            type=raw,value=latest
+
+      - name: Extract minimal image metadata
+        id: minimal-meta
+        uses: docker/metadata-action@v3
+        with:
+          images: ghcr.io/acrobox/docker/minimal
+          labels: |
+            org.opencontainers.image.title=Acrobox Minimal
+            org.opencontainers.image.description=Minimal image for Acrobox and lovers.
+            org.opencontainers.image.licenses=ISC
+          tags: |
+            type=raw,value=latest
+
+      - name: Build and push alpine image
+        uses: docker/build-push-action@v2
+        with:
+          context: alpine
+          push: true
+          tags: ${{ steps.alpine-meta.outputs.tags }}
+          labels: ${{ steps.alpine-meta.outputs.labels }}
+
+      - name: Build and push minimal image
+        uses: docker/build-push-action@v2
+        with:
+          context: minimal
+          push: true
+          tags: ${{ steps.minimal-meta.outputs.tags }}
+          labels: ${{ steps.minimal-meta.outputs.labels }}

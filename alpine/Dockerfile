@@ -1,5 +1,3 @@
-FROM alpine:latest
+FROM alpine:3.15
 RUN apk upgrade --no-cache && apk add --no-cache ca-certificates mailcap tzdata
 RUN adduser -u 1000 -S user
-
-LABEL org.opencontainers.image.source https://github.com/acrobox/docker/tree/master/alpine

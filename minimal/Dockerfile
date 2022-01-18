@@ -8,5 +8,3 @@ COPY --from=0 /etc/mime.types /etc/mime.types
 COPY --from=0 /usr/share/zoneinfo/ /usr/share/zoneinfo/
 COPY --from=0 --chown=user:nobody /home/user /home/user
 COPY --from=0 --chown=user:nobody /home/user /tmp
-
-LABEL org.opencontainers.image.source https://github.com/acrobox/docker/tree/master/minimal
