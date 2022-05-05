@@ -31,7 +31,7 @@ jobs:
 
       - name: Extract alpine image metadata
         id: alpine-meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: ghcr.io/acrobox/docker/alpine
           labels: |
@@ -43,7 +43,7 @@ jobs:
 
       - name: Extract minimal image metadata
         id: minimal-meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: ghcr.io/acrobox/docker/minimal
           labels: |
