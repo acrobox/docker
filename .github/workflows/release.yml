@@ -54,7 +54,7 @@ jobs:
             type=raw,value=latest
 
       - name: Build and push alpine image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: alpine
           push: true
@@ -62,7 +62,7 @@ jobs:
           labels: ${{ steps.alpine-meta.outputs.labels }}
 
       - name: Build and push minimal image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: minimal
           push: true
